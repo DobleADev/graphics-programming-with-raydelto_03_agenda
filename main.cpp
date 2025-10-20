@@ -124,8 +124,69 @@ class AgendaProgram
         newContact.get()->lastName = contactLastName;
         newContact.get()->email = contactEmail;
         newContact.get()->number = contactNumber;
-        std::cout << "Contact " << newContact.get()->ToString() << " created successfully." << std::endl;
+        std::cout << "Contact created successfully." << std::endl;
         agenda.createContact(std::move(newContact));
+    }
+
+    void modifyContact()
+    {
+        if (agenda.size() == 0)
+        {
+            std::cout << "The list is empty, no contacts to modify." << std::endl;
+            return;
+        }
+
+        int contactIndex;
+        std::cout << "Type the index of the contact to modify (ej: 1, 2, 3, ...): ";
+        std::cin >> contactIndex;
+        if (contactIndex-1 > agenda.size()-1 || contactIndex-1 < 0)
+        {
+            std::cout << "Invalid requested contact." << std::endl;
+            return;
+        }
+        Contact* contactToModify = agenda.readContact(contactIndex-1);
+        std::cout << (contactIndex) << ". " << contactToModify->ToString() << std::endl;
+        std::string contactName;
+        std::cout << "Type the new contact name (\"_\" to ignore field): ";
+        std::cin >> contactName;
+
+        std::string contactLastName;
+        std::cout << "Type the new contact last name (\"_\" to ignore field): ";
+        std::cin >> contactLastName;
+
+        std::string contactEmail;
+        std::cout << "Type the new contact email (\"_\" to ignore field): ";
+        std::cin >> contactEmail;
+
+        std::string contactNumber;
+        std::cout << "Type the new contact number (\"_\" to ignore field): ";
+        std::cin >> contactNumber;
+        
+        if (contactName != "_") contactToModify->name = contactName;
+        if (contactLastName != "_") contactToModify->lastName = contactLastName;
+        if (contactEmail != "_") contactToModify->email = contactEmail;
+        if (contactNumber != "_") contactToModify->number = contactNumber;
+        std::cout << "Contact modified successfully." << std::endl;
+    }
+
+    void deleteContact()
+    {
+        if (agenda.size() == 0)
+        {
+            std::cout << "The list is empty, no contacts to delete." << std::endl;
+            return;
+        }
+
+        int contactIndex;
+        std::cout << "Type the index of the contact to delete (ej: 1, 2, 3, ...): ";
+        std::cin >> contactIndex;
+        if (contactIndex-1 > agenda.size()-1 || contactIndex-1 < 0)
+        {
+            std::cout << "Invalid requested contact." << std::endl;
+            return;
+        }
+        agenda.deleteContact(contactIndex-1);
+        std::cout << "Contact deleted successfully." << std::endl;
     }
 
     public:
@@ -144,8 +205,8 @@ class AgendaProgram
             {
                 case 1: listContacts(); break;
                 case 2: createContact(); break;
-                // case 3: modifyContact(); break;
-                // case 4: deleteContact(); break;
+                case 3: modifyContact(); break;
+                case 4: deleteContact(); break;
                 case 9: isRunning = false; break;
                 default: break;
             }
